@@ -21,11 +21,12 @@ export function ShareModal({ setup, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50"
+      className="fixed inset-0 z-50 flex justify-end items-start"
+      style={{ paddingTop: '60px', paddingRight: '20px' }}
       onClick={onClose}
     >
       <div
-        className="absolute top-16 right-5 card w-80 p-5 fade-in"
+        className="card w-80 p-5 fade-in"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-start justify-between mb-4">
