@@ -14,15 +14,9 @@ export function SchemeSearch({ schemes, selected, onSelect, disabled }: Props) {
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
 
   const fuse = useMemo(
-    () =>
-      new Fuse(schemes, {
-        keys: ['schemeName'],
-        threshold: 0.35,
-        distance: 200,
-      }),
+    () => new Fuse(schemes, { keys: ['schemeName'], threshold: 0.35, distance: 200 }),
     [schemes]
   );
 
@@ -62,45 +56,91 @@ export function SchemeSearch({ schemes, selected, onSelect, disabled }: Props) {
 
   return (
     <div className="relative">
-      <input
-        ref={inputRef}
-        type="text"
-        value={query}
-        disabled={disabled}
-        placeholder="Search scheme name…"
-        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed text-sm shadow-sm"
-        onChange={e => {
-          setQuery(e.target.value);
-          setOpen(true);
-        }}
-        onFocus={() => query && setOpen(true)}
-        onBlur={() => setTimeout(() => setOpen(false), 150)}
-        onKeyDown={handleKey}
-      />
+      <div className="relative">
+        <svg
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input
+          ref={inputRef}
+          type="text"
+          value={query}
+          disabled={disabled}
+          placeholder="Search scheme name…"
+          className="input-base"
+          style={{ paddingLeft: 44 }}
+          onChange={e => {
+            setQuery(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => query && setOpen(true)}
+          onBlur={() => setTimeout(() => setOpen(false), 150)}
+          onKeyDown={handleKey}
+        />
+        {query && (
+          <button
+            type="button"
+            onClick={() => { setQuery(''); setOpen(false); }}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink transition-colors w-6 h-6 rounded-md flex items-center justify-center"
+            aria-label="Clear"
+          >
+            ×
+          </button>
+        )}
+      </div>
+
       {open && results.length > 0 && (
         <div
-          ref={listRef}
-          className="absolute z-50 w-full mt-1 bg-white rounded-xl border border-slate-200 shadow-xl overflow-auto max-h-64"
+          className="absolute z-50 w-full mt-2 overflow-hidden fade-in"
+          style={{
+            background: 'var(--bg-elevated)',
+            border: '1px solid var(--border)',
+            borderRadius: 12,
+            boxShadow: '0 20px 50px -10px rgba(0,0,0,0.6)',
+          }}
         >
           {results.map((scheme, i) => (
             <button
               key={scheme.schemeCode}
               type="button"
-              className={`w-full text-left px-4 py-3 text-sm border-b border-slate-100 last:border-0 transition-colors ${
-                i === highlighted ? 'bg-indigo-50 text-indigo-700' : 'text-slate-700 hover:bg-slate-50'
-              }`}
+              className="w-full text-left px-4 py-3 text-sm transition-colors flex items-center gap-3"
+              style={{
+                background: i === highlighted ? 'var(--surface-2)' : 'transparent',
+                color: i === highlighted ? 'var(--ink)' : 'var(--ink-secondary)',
+                borderBottom: i < results.length - 1 ? '1px solid var(--border)' : 'none',
+              }}
               onMouseDown={() => pick(scheme)}
               onMouseEnter={() => setHighlighted(i)}
             >
-              <div className="font-medium truncate">{scheme.schemeName}</div>
-              <div className="text-xs text-slate-400 mt-0.5">Code: {scheme.schemeCode}</div>
+              <div className="flex-1 min-w-0">
+                <div className="font-medium truncate">{scheme.schemeName}</div>
+                <div className="text-[11px] text-ink-muted mt-0.5 font-mono">#{scheme.schemeCode}</div>
+              </div>
+              <div className="text-ink-muted shrink-0">+</div>
             </button>
           ))}
         </div>
       )}
       {open && query.trim() && results.length === 0 && (
-        <div className="absolute z-50 w-full mt-1 bg-white rounded-xl border border-slate-200 shadow-xl px-4 py-3 text-sm text-slate-400">
-          No schemes found
+        <div
+          className="absolute z-50 w-full mt-2 px-4 py-3 text-sm text-ink-muted fade-in"
+          style={{
+            background: 'var(--bg-elevated)',
+            border: '1px solid var(--border)',
+            borderRadius: 12,
+          }}
+        >
+          No schemes match "{query}"
         </div>
       )}
     </div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SetupForm } from './components/SetupForm';
 import { Dashboard } from './components/Dashboard';
+import { ThemeProvider } from './theme/ThemeContext';
 import type { SetupFormData } from './types';
 
 const queryClient = new QueryClient();
@@ -33,12 +34,16 @@ export default function App() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {setup ? (
-        <Dashboard setup={setup} onBack={() => setSetup(null)} />
-      ) : (
-        <SetupForm initial={savedSetup ?? undefined} onSubmit={handleSubmit} />
-      )}
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <div key={setup ? 'dashboard' : 'setup'} className="fade-in">
+          {setup ? (
+            <Dashboard setup={setup} onBack={() => setSetup(null)} />
+          ) : (
+            <SetupForm initial={savedSetup ?? undefined} onSubmit={handleSubmit} />
+          )}
+        </div>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }

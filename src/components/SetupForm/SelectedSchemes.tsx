@@ -1,3 +1,4 @@
+import { getSchemeColor } from '../../utils/returns';
 import type { SchemeListItem } from '../../types';
 
 interface Props {
@@ -7,37 +8,42 @@ interface Props {
   onSipChange: (code: number, amount: number) => void;
 }
 
-const COLORS = ['bg-indigo-100 text-indigo-700', 'bg-amber-100 text-amber-700', 'bg-emerald-100 text-emerald-700', 'bg-red-100 text-red-700', 'bg-violet-100 text-violet-700'];
-
 export function SelectedSchemes({ schemes, onRemove, sipAmounts, onSipChange }: Props) {
   if (schemes.length === 0) return null;
   return (
-    <div className="flex flex-col gap-2 mt-3">
+    <div className="flex flex-col gap-2 mt-4">
       {schemes.map((s, i) => (
         <div
           key={s.schemeCode}
-          className="flex flex-col gap-2 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200"
+          className="group fade-in flex flex-col gap-2.5 p-3.5 rounded-xl"
+          style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
         >
           <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3 min-w-0">
-              <span className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${COLORS[i % COLORS.length]}`}>
-                {i + 1}
+            <div className="flex items-center gap-3 min-w-0 flex-1">
+              <span
+                className="shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-mono font-bold"
+                style={{ background: getSchemeColor(i) + '22', color: getSchemeColor(i) }}
+              >
+                {String(i + 1).padStart(2, '0')}
               </span>
-              <span className="text-sm text-slate-700 truncate">{s.schemeName}</span>
+              <span className="text-sm font-medium text-ink truncate">{s.schemeName}</span>
             </div>
             <button
               type="button"
               onClick={() => onRemove(s.schemeCode)}
-              className="shrink-0 text-slate-400 hover:text-red-500 transition-colors text-lg leading-none"
+              className="shrink-0 w-7 h-7 rounded-md text-ink-muted hover:text-negative hover:bg-negative-soft transition-all flex items-center justify-center"
               aria-label="Remove"
             >
-              ×
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
             </button>
           </div>
-          <div className="flex items-center gap-2 pl-9">
-            <span className="text-xs text-slate-500 shrink-0">Monthly SIP</span>
-            <div className="relative flex-1 max-w-36">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-medium">₹</span>
+          <div className="flex items-center gap-2 pl-10">
+            <span className="text-[11px] uppercase tracking-wider text-ink-muted font-mono shrink-0">SIP</span>
+            <div className="relative flex-1 max-w-40">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-ink-muted font-mono">₹</span>
               <input
                 type="number"
                 min={0}
@@ -45,10 +51,17 @@ export function SelectedSchemes({ schemes, onRemove, sipAmounts, onSipChange }: 
                 value={sipAmounts[s.schemeCode] || ''}
                 onChange={e => onSipChange(s.schemeCode, Math.max(0, Number(e.target.value)))}
                 placeholder="optional"
-                className="w-full pl-6 pr-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent text-xs shadow-sm"
+                className="w-full pl-7 pr-3 py-1.5 text-xs font-mono outline-none transition-all rounded-md"
+                style={{
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--ink)',
+                }}
+                onFocus={e => (e.currentTarget.style.borderColor = 'var(--accent)')}
+                onBlur={e => (e.currentTarget.style.borderColor = 'var(--border)')}
               />
             </div>
-            <span className="text-xs text-slate-400">/month</span>
+            <span className="text-[11px] text-ink-muted">/month</span>
           </div>
         </div>
       ))}

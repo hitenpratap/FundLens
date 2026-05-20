@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { useSchemeNAVs } from '../../hooks/useSchemeNAV';
 import { computeSchemeReturns, computePortfolio, computePortfolioXIRR } from '../../utils/returns';
 import { SummaryCards } from './SummaryCards';
@@ -6,6 +6,7 @@ import { PortfolioChart } from './PortfolioChart';
 import { SchemeChart } from './SchemeChart';
 import { MonthlyTable } from './MonthlyTable';
 import { PortfolioAllocation } from './PortfolioAllocation';
+import { ThemeToggle } from '../ThemeToggle';
 import type { SetupFormData } from '../../types';
 
 interface Props {
@@ -15,13 +16,14 @@ interface Props {
 
 function Skeleton() {
   return (
-    <div className="animate-pulse space-y-4">
-      <div className="h-28 bg-slate-200 rounded-2xl" />
-      <div className="grid grid-cols-2 gap-4">
-        <div className="h-40 bg-slate-200 rounded-2xl" />
-        <div className="h-40 bg-slate-200 rounded-2xl" />
+    <div className="space-y-4">
+      <div className="shimmer h-44 rounded-2xl" />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="shimmer h-32 rounded-2xl" />
+        <div className="shimmer h-32 rounded-2xl" />
+        <div className="shimmer h-32 rounded-2xl" />
       </div>
-      <div className="h-64 bg-slate-200 rounded-2xl" />
+      <div className="shimmer h-80 rounded-2xl" />
     </div>
   );
 }
@@ -30,6 +32,14 @@ export function Dashboard({ setup, onBack }: Props) {
   const { investorName, years, selectedSchemes, sipAmounts } = setup;
   const schemeCodes = selectedSchemes.map(s => s.schemeCode);
   const navQueries = useSchemeNAVs(schemeCodes);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const isLoading = navQueries.some(q => q.isLoading);
   const hasError = navQueries.some(q => q.isError);
@@ -77,74 +87,131 @@ export function Dashboard({ setup, onBack }: Props) {
   const fmt = (d: Date) => d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Top bar */}
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-30">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+    <div className="min-h-screen bg-app">
+      <header
+        className="sticky top-0 z-30 transition-all duration-200"
+        style={{
+          background: scrolled ? 'color-mix(in srgb, var(--bg) 80%, transparent)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(16px) saturate(160%)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(16px) saturate(160%)' : 'none',
+          borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
             <button
               onClick={onBack}
-              className="p-2 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors"
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-ink-tertiary hover:text-ink transition-colors shrink-0"
+              style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
               aria-label="Back"
             >
-              ←
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+              </svg>
             </button>
-            <div>
-              <div className="text-sm font-semibold text-slate-800">{investorName}</div>
-              <div className="text-xs text-slate-400">{fmt(startDate)} – {fmt(endDate)} · {years}Y analysis</div>
+            <Logo />
+            <div className="min-w-0">
+              <div className="text-sm font-semibold text-ink truncate">{investorName}</div>
+              <div className="text-[11px] text-ink-muted font-mono">
+                {fmt(startDate)} → {fmt(endDate)} · {years}Y
+              </div>
             </div>
           </div>
+          <div className="flex items-center gap-2">
+            {!isLoading && !hasError && schemeReturns.length > 0 && (
+              <span
+                className="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-mono text-ink-tertiary px-2.5 py-1 rounded-md"
+                style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: 'var(--accent)' }} />
+                LIVE
+              </span>
+            )}
+            <ThemeToggle />
+          </div>
         </div>
-      </div>
+      </header>
 
-      {/* Content */}
-      <div className="max-w-6xl mx-auto px-4 py-6" id="dashboard-content">
+      <div className="max-w-6xl mx-auto px-5 py-6 pb-20" id="dashboard-content">
         {isLoading && (
-          <div className="space-y-4">
-            <div className="text-center py-8">
-              <div className="inline-flex items-center gap-2 text-slate-500 text-sm">
-                <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-                </svg>
-                Fetching NAV data for {selectedSchemes.length} scheme{selectedSchemes.length > 1 ? 's' : ''}…
-              </div>
+          <div className="space-y-6 fade-in">
+            <div className="text-center py-2 text-sm text-ink-tertiary flex items-center justify-center gap-2">
+              <svg className="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+              </svg>
+              Fetching NAV data for {selectedSchemes.length} scheme{selectedSchemes.length > 1 ? 's' : ''}…
             </div>
             <Skeleton />
           </div>
         )}
 
         {hasError && !isLoading && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
-            <div className="text-red-600 font-semibold mb-1">Failed to load NAV data</div>
-            <div className="text-red-400 text-sm">Check your connection and try again.</div>
+          <div
+            className="card p-8 text-center fade-in max-w-md mx-auto mt-12"
+            style={{ borderColor: 'var(--negative)' }}
+          >
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-3 bg-negative-soft">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--negative)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            </div>
+            <div className="text-ink font-semibold mb-1">Failed to load NAV data</div>
+            <div className="text-ink-tertiary text-sm mb-5">Check your connection and try again.</div>
             <button
               onClick={onBack}
-              className="mt-4 px-4 py-2 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700"
+              className="btn-primary"
+              style={{ background: 'var(--negative)', color: '#fff' }}
             >
-              Go Back
+              Go back
             </button>
           </div>
         )}
 
         {!isLoading && !hasError && schemeReturns.length > 0 && (
-          <>
-            <SummaryCards
-              schemes={schemeReturns}
-              portfolioReturn={portfolioReturn}
-              portfolioCagr={portfolioCagr}
-              portfolioXirr={portfolioXirr}
-              years={years}
-              portfolioTotalInvested={portfolioTotalInvested}
-              portfolioCurrentValue={portfolioCurrentValue}
-            />
-            <PortfolioChart schemes={schemeReturns} portfolio={portfolio} />
-            <PortfolioAllocation schemes={schemeReturns} />
-            <SchemeChart schemes={schemeReturns} />
-            <MonthlyTable schemes={schemeReturns} portfolio={portfolio} />
-          </>
+          <div className="space-y-5">
+            <div className="fade-in">
+              <SummaryCards
+                schemes={schemeReturns}
+                portfolioReturn={portfolioReturn}
+                portfolioCagr={portfolioCagr}
+                portfolioXirr={portfolioXirr}
+                years={years}
+                portfolioTotalInvested={portfolioTotalInvested}
+                portfolioCurrentValue={portfolioCurrentValue}
+              />
+            </div>
+
+            <div className="fade-in-delay-2">
+              <PortfolioChart schemes={schemeReturns} portfolio={portfolio} />
+            </div>
+
+            <div className="fade-in-delay-3">
+              <PortfolioAllocation schemes={schemeReturns} />
+            </div>
+
+            <div className="fade-in-delay-4">
+              <SchemeChart schemes={schemeReturns} />
+            </div>
+
+            <div className="fade-in-delay-5">
+              <MonthlyTable schemes={schemeReturns} portfolio={portfolio} />
+            </div>
+          </div>
         )}
       </div>
     </div>
+  );
+}
+
+function Logo() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="shrink-0">
+      <rect x="2" y="2" width="20" height="20" rx="6" fill="var(--accent)" />
+      <path d="M6 16L10 11L13 14L18 8" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="18" cy="8" r="1.5" fill="#000" />
+    </svg>
   );
 }

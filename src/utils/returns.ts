@@ -33,12 +33,12 @@ function computeXIRR(cashflows: { amount: number; date: Date }[]): number | null
 }
 
 const SCHEME_COLORS = [
-  '#6366f1', // indigo
-  '#f59e0b', // amber
-  '#10b981', // emerald
-  '#ef4444', // red
-  '#8b5cf6', // violet
-  '#06b6d4', // cyan
+  '#00E599',
+  '#FF8A4C',
+  '#A78BFA',
+  '#22D3EE',
+  '#F472B6',
+  '#FACC15',
 ];
 
 export function getSchemeColor(index: number): string {
