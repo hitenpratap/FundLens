@@ -7,6 +7,7 @@ import { SchemeChart } from './SchemeChart';
 import { MonthlyTable } from './MonthlyTable';
 import { PortfolioAllocation } from './PortfolioAllocation';
 import { ThemeToggle } from '../ThemeToggle';
+import { ShareModal } from './ShareModal';
 import type { SetupFormData } from '../../types';
 
 interface Props {
@@ -33,6 +34,7 @@ export function Dashboard({ setup, onBack }: Props) {
   const schemeCodes = selectedSchemes.map(s => s.schemeCode);
   const navQueries = useSchemeNAVs(schemeCodes);
   const [scrolled, setScrolled] = useState(false);
+  const [showShare, setShowShare] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -88,6 +90,7 @@ export function Dashboard({ setup, onBack }: Props) {
 
   return (
     <div className="min-h-screen bg-app">
+      {showShare && <ShareModal setup={setup} onClose={() => setShowShare(false)} />}
       <header
         className="sticky top-0 z-30 transition-all duration-200"
         style={{
@@ -128,6 +131,20 @@ export function Dashboard({ setup, onBack }: Props) {
                 LIVE
               </span>
             )}
+            <button
+              onClick={() => setShowShare(true)}
+              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-xl transition-colors"
+              style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--ink-tertiary)' }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="18" cy="5" r="3" />
+                <circle cx="6" cy="12" r="3" />
+                <circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+              Share
+            </button>
             <ThemeToggle />
           </div>
         </div>

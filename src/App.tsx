@@ -18,6 +18,18 @@ function loadSetup(): SetupFormData | null {
   }
 }
 
+function loadFromURL(): SetupFormData | null {
+  try {
+    const param = new URLSearchParams(window.location.search).get('share');
+    if (!param) return null;
+    const data = JSON.parse(atob(param)) as SetupFormData;
+    if (!data.investorName || !Array.isArray(data.selectedSchemes)) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
 function saveSetup(data: SetupFormData) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -26,7 +38,7 @@ function saveSetup(data: SetupFormData) {
 
 export default function App() {
   const [savedSetup] = useState<SetupFormData | null>(loadSetup);
-  const [setup, setSetup] = useState<SetupFormData | null>(null);
+  const [setup, setSetup] = useState<SetupFormData | null>(() => loadFromURL());
 
   function handleSubmit(data: SetupFormData) {
     saveSetup(data);

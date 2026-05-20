@@ -70,7 +70,7 @@ export function SetupForm({ initial, onSubmit }: Props) {
         <ThemeToggle />
       </header>
 
-      <div className="relative z-10 max-w-xl mx-auto px-6 pt-14 pb-16">
+      <div className="relative z-10 max-w-2xl mx-auto px-6 pt-14 pb-16">
         <div className="text-center mb-10 fade-in">
           <div className="inline-flex items-center gap-2 chip" style={{ background: 'var(--surface-2)', color: 'var(--ink-tertiary)', border: '1px solid var(--border)' }}>
             <span className="w-1.5 h-1.5 rounded-full bg-positive-soft" style={{ background: 'var(--accent)' }} />
