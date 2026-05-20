@@ -62,3 +62,13 @@ src/
 - Tailwind utility classes for all styling (no CSS modules, no inline style except dynamic colors)
 - Dynamic scheme colors come from `getSchemeColor(index)` in `utils/returns.ts`
 - PDF export targets `id="dashboard-content"` div
+
+## Commits
+- Always use [Conventional Commits](https://www.conventionalcommits.org/) format: `<type>(<scope>): <subject> <emoji>`
+- Emoji goes at the **end** of the subject line
+- Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
+- Emoji guide: `feat ✨`, `fix 🐛`, `docs 📝`, `style 💄`, `refactor ♻️`, `perf ⚡`, `test ✅`, `build 📦`, `ci 👷`, `chore 🔧`, `revert ⏪`
+- Examples:
+  - `feat(dashboard): add portfolio allocation pie chart ✨`
+  - `fix(api): handle empty NAV response 🐛`
+  - `docs: update setup instructions 📝`
