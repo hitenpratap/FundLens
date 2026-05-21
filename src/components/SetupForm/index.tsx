@@ -62,7 +62,7 @@ export function SetupForm({ initial, onSubmit }: Props) {
       <div className="glow-mint" style={{ top: '-200px', right: '-100px' }} />
       <div className="glow-mint" style={{ bottom: '-200px', left: '-100px', opacity: 0.5 }} />
 
-      <header className="relative z-10 max-w-3xl mx-auto px-6 pt-6 flex items-center justify-between">
+      <header className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 pt-6 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <Logo />
           <div className="text-sm font-semibold tracking-tight">FundLens</div>
@@ -70,13 +70,13 @@ export function SetupForm({ initial, onSubmit }: Props) {
         <ThemeToggle />
       </header>
 
-      <div className="relative z-10 max-w-2xl mx-auto px-6 pt-14 pb-16">
+      <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6 pt-10 sm:pt-14 pb-16">
         <div className="text-center mb-10 fade-in">
           <div className="inline-flex items-center gap-2 chip" style={{ background: 'var(--surface-2)', color: 'var(--ink-tertiary)', border: '1px solid var(--border)' }}>
             <span className="w-1.5 h-1.5 rounded-full bg-positive-soft" style={{ background: 'var(--accent)' }} />
             Returns analyzer
           </div>
-          <h1 className="font-display text-5xl md:text-6xl tracking-tight mt-5 leading-[1.05]">
+          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl tracking-tight mt-5 leading-[1.05]">
             See your funds<br />
             <em className="text-accent not-italic" style={{ fontStyle: 'italic' }}>compound clearly.</em>
           </h1>
@@ -87,7 +87,7 @@ export function SetupForm({ initial, onSubmit }: Props) {
 
         <StepIndicator current={step} onJump={(s) => s <= step && setStep(s)} />
 
-        <div className="card p-7 mt-6 fade-in-delay-1" style={{ minHeight: 340 }}>
+        <div className="card p-5 sm:p-7 mt-6 fade-in-delay-1" style={{ minHeight: 340 }}>
           {step === 0 && (
             <StepIdentity
               value={investorName}
@@ -330,7 +330,7 @@ function StepReview({ name, years, selected, sipAmounts, totalSip }: StepReviewP
         <h2 className="text-2xl font-semibold tracking-tight">Review</h2>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="p-4 rounded-xl bg-surface-2">
           <div className="text-[11px] uppercase tracking-wider text-ink-muted font-mono mb-1">Investor</div>
           <div className="text-sm font-semibold truncate">{name || '—'}</div>

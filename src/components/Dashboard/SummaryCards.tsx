@@ -48,7 +48,7 @@ export function SummaryCards({
     <div className="space-y-4">
       {/* Hero block */}
       <div
-        className="card-elevated p-7 relative overflow-hidden"
+        className="card-elevated p-5 sm:p-7 relative overflow-hidden"
         style={{ background: 'var(--bg-elevated)' }}
       >
         <div
@@ -62,7 +62,7 @@ export function SummaryCards({
           }}
         />
 
-        <div className="relative flex flex-col lg:flex-row lg:items-end gap-8 justify-between">
+        <div className="relative flex flex-col lg:flex-row lg:items-end gap-5 sm:gap-8 justify-between">
           <div className="min-w-0">
             <div className="flex items-center gap-2 text-[11px] uppercase tracking-wider text-ink-muted font-mono mb-3">
               <span>Portfolio return</span>
@@ -73,7 +73,7 @@ export function SummaryCards({
               <div
                 className="font-mono font-semibold tnum"
                 style={{
-                  fontSize: 'clamp(56px, 9vw, 96px)',
+                  fontSize: 'clamp(44px, 12vw, 96px)',
                   letterSpacing: '-0.04em',
                   lineHeight: 0.95,
                   color: positive ? 'var(--positive)' : 'var(--negative)',
@@ -85,7 +85,7 @@ export function SummaryCards({
               <Trend value={portfolioReturn} />
             </div>
 
-            <div className="flex flex-wrap gap-x-7 gap-y-2 mt-6 font-mono text-sm text-ink-secondary">
+            <div className="flex flex-wrap gap-x-5 sm:gap-x-7 gap-y-2 mt-6 font-mono text-sm text-ink-secondary">
               <Metric label="CAGR" value={`${cagrAnim >= 0 ? '+' : ''}${cagrAnim.toFixed(2)}%`} suffix="p.a." />
               {portfolioXirr != null && (
                 <Metric label="XIRR" value={`${xirrAnim >= 0 ? '+' : ''}${xirrAnim.toFixed(2)}%`} suffix="p.a." />
@@ -95,7 +95,7 @@ export function SummaryCards({
 
           {hasSIP && (
             <div
-              className="grid grid-cols-3 gap-5 lg:gap-7 lg:border-l lg:pl-7 shrink-0"
+              className="grid grid-cols-3 gap-3 sm:gap-5 lg:gap-7 lg:border-l lg:pl-7 shrink-0 w-full lg:w-auto"
               style={{ borderColor: 'var(--border)' }}
             >
               <KPI label="Invested" value={`₹${inr(investedAnim)}`} />
@@ -145,7 +145,7 @@ function KPI({
   return (
     <div className="min-w-0">
       <div className="text-[11px] uppercase tracking-wider text-ink-muted font-mono mb-1">{label}</div>
-      <div className="font-mono font-semibold tnum text-base lg:text-lg truncate" style={{ color }} title={value}>
+      <div className="font-mono font-semibold tnum text-sm sm:text-base lg:text-lg break-words" style={{ color }}>
         {value}
       </div>
     </div>

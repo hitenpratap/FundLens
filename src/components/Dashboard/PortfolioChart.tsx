@@ -51,7 +51,7 @@ export function PortfolioChart({ schemes, portfolio }: Props) {
   const delta = last && first ? ((last.portfolioValue - first.portfolioValue) / first.portfolioValue) * 100 : 0;
 
   return (
-    <div className="card p-5 lg:p-6">
+    <div className="card p-4 sm:p-5 lg:p-6">
       <div className="flex items-start justify-between gap-3 flex-wrap mb-4">
         <div>
           <h2 className="text-base font-semibold text-ink tracking-tight">Portfolio growth</h2>
@@ -154,7 +154,7 @@ export function PortfolioChart({ schemes, portfolio }: Props) {
         {showSchemes && schemes.map(s => (
           <span key={s.schemeCode} className="flex items-center gap-1.5 text-ink-tertiary">
             <span className="w-3 h-0.5 opacity-60" style={{ background: s.color }} />
-            <span className="truncate max-w-[160px]">{s.schemeName}</span>
+            <span className="truncate max-w-[120px] sm:max-w-[160px]">{s.schemeName}</span>
           </span>
         ))}
       </div>

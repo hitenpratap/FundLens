@@ -60,7 +60,7 @@ export function PortfolioAllocation({ schemes }: Props) {
   const centerLabel = focusItem ? focusItem.short : 'Total';
 
   return (
-    <div className="card p-5 lg:p-6">
+    <div className="card p-4 sm:p-5 lg:p-6">
       <div className="flex items-center justify-between mb-5">
         <div>
           <h2 className="text-base font-semibold text-ink tracking-tight">Allocation</h2>
@@ -87,9 +87,9 @@ export function PortfolioAllocation({ schemes }: Props) {
         </div>
       </div>
 
-      <div className="flex items-center gap-8 flex-wrap">
-        <div className="relative shrink-0" style={{ width: SIZE, height: SIZE }}>
-          <svg width={SIZE} height={SIZE} style={{ transform: 'rotate(-90deg)' }}>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8">
+        <div className="relative shrink-0 w-40 h-40 sm:w-[200px] sm:h-[200px] mx-auto sm:mx-0">
+          <svg width="100%" height="100%" viewBox={`0 0 ${SIZE} ${SIZE}`} style={{ transform: 'rotate(-90deg)' }}>
             <circle
               cx={SIZE / 2}
               cy={SIZE / 2}
@@ -137,7 +137,7 @@ export function PortfolioAllocation({ schemes }: Props) {
           </div>
         </div>
 
-        <div className="flex-1 min-w-[200px] space-y-2.5">
+        <div className="w-full sm:flex-1 sm:min-w-[200px] space-y-2.5">
           {segments.map(seg => {
             const isHovered = hovered === seg.index;
             const pct = seg.fraction * 100;

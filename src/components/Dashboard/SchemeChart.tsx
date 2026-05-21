@@ -35,7 +35,7 @@ export function SchemeChart({ schemes }: Props) {
   }));
 
   return (
-    <div className="card p-5 lg:p-6">
+    <div className="card p-4 sm:p-5 lg:p-6">
       <div className="flex items-start justify-between gap-3 flex-wrap mb-5">
         <div>
           <h2 className="text-base font-semibold text-ink tracking-tight">Per-scheme detail</h2>
@@ -58,7 +58,7 @@ export function SchemeChart({ schemes }: Props) {
               }}
             >
               <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: s.color }} />
-              <span className="truncate max-w-[180px]">
+              <span className="truncate max-w-[140px] sm:max-w-[180px]">
                 {s.schemeName.length > 35 ? s.schemeName.slice(0, 35) + '…' : s.schemeName}
               </span>
             </button>
@@ -67,7 +67,7 @@ export function SchemeChart({ schemes }: Props) {
       </div>
 
       <div
-        className="rounded-xl p-4 mb-5 flex flex-wrap gap-x-6 gap-y-3"
+        className="rounded-xl p-3 sm:p-4 mb-5 flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-3"
         style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
       >
         <Stat label="Current NAV" value={`₹${scheme.currentNav.toFixed(2)}`} />

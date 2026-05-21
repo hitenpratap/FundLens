@@ -42,7 +42,7 @@ export function SelectedSchemes({ schemes, onRemove, sipAmounts, onSipChange }: 
           </div>
           <div className="flex items-center gap-2 pl-10">
             <span className="text-[11px] uppercase tracking-wider text-ink-muted font-mono shrink-0">SIP</span>
-            <div className="relative flex-1 max-w-40">
+            <div className="relative flex-1 max-w-32 sm:max-w-40">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-ink-muted font-mono">₹</span>
               <input
                 type="number"

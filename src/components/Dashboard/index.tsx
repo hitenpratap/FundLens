@@ -100,7 +100,7 @@ export function Dashboard({ setup, onBack }: Props) {
           borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
         }}
       >
-        <div className="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between gap-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3.5 flex items-center justify-between gap-3 sm:gap-4">
           <div className="flex items-center gap-3 min-w-0">
             <button
               onClick={onBack}
@@ -150,7 +150,7 @@ export function Dashboard({ setup, onBack }: Props) {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-5 py-6 pb-20" id="dashboard-content">
+      <div className="max-w-6xl mx-auto px-4 sm:px-5 py-4 sm:py-6 pb-20" id="dashboard-content">
         {isLoading && (
           <div className="space-y-6 fade-in">
             <div className="text-center py-2 text-sm text-ink-tertiary flex items-center justify-center gap-2">

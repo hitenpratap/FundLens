@@ -11,7 +11,7 @@ function ReturnCell({
   gainINR,
   theme,
 }: { value: number | null; gainINR?: number | null; theme: 'dark' | 'light' }) {
-  if (value === null) return <td className="px-3 py-2 text-center text-ink-muted text-xs font-mono">—</td>;
+  if (value === null) return <td className="px-2.5 py-2 sm:px-3 text-center text-ink-muted text-xs font-mono">—</td>;
   const intensity = Math.min(Math.abs(value) / 5, 1);
   const positive = value >= 0;
   const baseAlpha = theme === 'dark' ? 0.08 : 0.06;
@@ -21,7 +21,7 @@ function ReturnCell({
   const textColor = positive ? 'var(--positive)' : 'var(--negative)';
   return (
     <td
-      className="px-3 py-2 text-center text-[11px] font-mono tnum"
+      className="px-2.5 py-2 sm:px-3 text-center text-xs sm:text-[11px] font-mono tnum"
       style={{ background: `rgba(${rgb}, ${alpha})`, color: textColor }}
     >
       <div className="font-semibold">{positive ? '+' : ''}{value.toFixed(2)}%</div>
@@ -61,35 +61,39 @@ export function MonthlyTable({ schemes, portfolio }: Props) {
   if (allMonths.length === 0) return null;
 
   return (
-    <div className="card p-5 lg:p-6">
+    <div className="card p-4 sm:p-5 lg:p-6">
       <div className="mb-4">
         <h2 className="text-base font-semibold text-ink tracking-tight">Monthly heatmap</h2>
         <p className="text-xs text-ink-muted mt-0.5 font-mono">
           MoM % change · {allMonths.length} months
           {hasSIP ? ' · ₹ shows market gain on existing units' : ''}
         </p>
+        <p className="text-[10px] text-ink-tertiary font-mono mt-1.5 sm:hidden">← swipe to scroll →</p>
       </div>
 
-      <div className="overflow-x-auto -mx-5 lg:-mx-6 px-5 lg:px-6">
+      <div className="overflow-x-auto -mx-4 sm:-mx-5 lg:-mx-6 px-4 sm:px-5 lg:px-6">
         <table className="w-full text-sm border-collapse min-w-max">
           <thead>
             <tr style={{ borderBottom: '1px solid var(--border)' }}>
-              <th className="px-3 py-2.5 text-left text-[10px] font-mono uppercase tracking-wider text-ink-muted sticky left-0 z-10" style={{ background: 'var(--surface)' }}>
+              <th
+                className="px-2.5 sm:px-3 py-2.5 text-left text-[11px] sm:text-[10px] font-mono uppercase tracking-wider text-ink-muted sticky left-0 z-10 whitespace-nowrap"
+                style={{ background: 'var(--surface)', boxShadow: '2px 0 4px rgba(0,0,0,0.08)' }}
+              >
                 Month
               </th>
               {schemes.map(s => (
-                <th key={s.schemeCode} className="px-3 py-2.5 text-center text-[10px] font-mono uppercase tracking-wider whitespace-nowrap" style={{ color: s.color }}>
+                <th key={s.schemeCode} className="px-2.5 sm:px-3 py-2.5 text-center text-[11px] sm:text-[10px] font-mono uppercase tracking-wider whitespace-nowrap" style={{ color: s.color }}>
                   <div className="flex items-center justify-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full" style={{ background: s.color }} />
                     {s.schemeName.split(' ').slice(0, 3).join(' ')}
                   </div>
                 </th>
               ))}
-              <th className="px-3 py-2.5 text-center text-[10px] font-mono uppercase tracking-wider text-accent">
+              <th className="px-2.5 sm:px-3 py-2.5 text-center text-[11px] sm:text-[10px] font-mono uppercase tracking-wider text-accent">
                 Portfolio
               </th>
               {hasSIP && (
-                <th className="px-3 py-2.5 text-right text-[10px] font-mono uppercase tracking-wider text-ink-muted whitespace-nowrap">
+                <th className="px-2.5 sm:px-3 py-2.5 text-right text-[11px] sm:text-[10px] font-mono uppercase tracking-wider text-ink-muted whitespace-nowrap">
                   Total value
                 </th>
               )}
@@ -102,8 +106,8 @@ export function MonthlyTable({ schemes, portfolio }: Props) {
               return (
                 <tr key={month} style={{ borderBottom: '1px solid var(--border)' }} className="hover:bg-surface-2 transition-colors">
                   <td
-                    className="px-3 py-2 text-[11px] font-mono text-ink-secondary sticky left-0 z-10 whitespace-nowrap"
-                    style={{ background: 'var(--surface)' }}
+                    className="px-2.5 sm:px-3 py-2 text-xs sm:text-[11px] font-mono text-ink-secondary sticky left-0 z-10 whitespace-nowrap"
+                    style={{ background: 'var(--surface)', boxShadow: '2px 0 4px rgba(0,0,0,0.08)' }}
                   >
                     {p?.label ?? month}
                   </td>
@@ -120,7 +124,7 @@ export function MonthlyTable({ schemes, portfolio }: Props) {
                   })}
                   <ReturnCell value={p?.monthlyReturn ?? null} theme={theme} />
                   {hasSIP && (
-                    <td className="px-3 py-2 text-right text-[11px] font-mono font-semibold tnum text-ink whitespace-nowrap">
+                    <td className="px-2.5 sm:px-3 py-2 text-right text-xs sm:text-[11px] font-mono font-semibold tnum text-ink whitespace-nowrap">
                       {totalValue != null ? `₹${Math.round(totalValue).toLocaleString('en-IN')}` : '—'}
                     </td>
                   )}
