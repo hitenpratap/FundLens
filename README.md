@@ -4,6 +4,12 @@ Analyze Indian mutual fund returns month by month. Powered by [mfapi.in](https:/
 
 **Live demo:** https://hitenpratap.github.io/FundLens/
 
+## Screenshots
+
+| Setup Wizard | Dashboard |
+|:---:|:---:|
+| ![Setup – enter your name, pick a period, and select schemes](docs/screenshot-setup.png) | ![Dashboard – portfolio return, scheme cards, and growth chart](docs/screenshot-dashboard.png) |
+
 ## Features
 
 - **Scheme search** — fuzzy search over 10,000+ AMFI schemes, pick up to 5
